@@ -1,0 +1,21 @@
+{
+    "customer_data": {
+        "file_path": "customer_data.csv",
+        "table_name": "customer_data",
+        "required_columns": ["customer_id", "customer_name", "email", "signup_date"],
+        "key_column": "customer_id"
+    },
+    "sales_data": {
+        "file_path": "sales_data.csv",
+        "table_name": "sales_data",
+        "required_columns": ["order_id", "customer_id", "product", "quantity", "price", "order_date"],
+        "key_column": "order_id"
+    },
+    "database": {
+        "user": "postgres",
+        "password": "admin",
+        "host": "localhost",
+        "port": 5432,
+        "database": "Take_Home_ETL_Pipeline"
+    }
+}
