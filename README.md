@@ -19,7 +19,27 @@ This project implements an ETL (Extract, Transform, Load) pipeline to process sa
   - Prevents duplicate data and ensures database integrity.
 
 ---
+## Approach
+- **Extraction:**
+  - Reads multiple CSV files (sales_data.csv, customer_data.csv) dynamically.
+  - Validates the presence of required columns using configurations from config.json.
+  - Logs errors for missing or invalid files and columns.
 
+- **Transformation:**
+  - Cleans data by converting dates to a standard format (YYYY-MM-DD) and removing invalid rows.
+  - Enriches sales data with customer details and computes additional fields:
+  - total_value for each order.
+  - order_type (e.g., "High-Value Order").
+  - customer_tenure in days since signup.
+  - Aggregates sales data into a summary table showing total sales and order counts by product.
+
+- **Loading:**
+  - Loads transformed data into PostgreSQL tables (customer_data, sales_data, sales_summary) using batch processing.
+  - Ensures data integrity with primary and foreign key constraints.
+  - Manages duplicate data by checking existing records before insertion.
+
+  
+---
 ## Setup Instructions
 
 ### 1. Clone the Repository
@@ -40,7 +60,6 @@ Create a virtual environment for the project:
 ```bash
 python -m venv venv
 source your_env_name/bin/activate
-
 ```
 
 - **Install Dependencies:**
@@ -60,7 +79,7 @@ Log in to PostgreSQL and create a new database:
 CREATE DATABASE Take_Home_ETL_Pipeline;
 ```
 - Create Schema
-Coy and Paste the provided Data_schema.sql script to set up the database tables using the GUI query tool on pgAdmin4
+Copy and Paste the provided Data_schema.sql script to set up the database tables using the GUI query tool on pgAdmin4
 
 ###  4. Configuration
     - Edit config.json

@@ -11,6 +11,10 @@ logging.basicConfig(
 )
 
 def load_config(config_file="config.json"):
+    """
+    Loads the file paths for database info from config.json
+    returns a config_object containing the data.
+    """
     try:
         with open(config_file, 'r') as file:
             config = json.load(file)
@@ -24,6 +28,9 @@ def load_config(config_file="config.json"):
         return None
     
 def get_db_engine(config_file="config.json"):
+    """
+   Load database and establish connection to PostgreSQL database
+    """
     db_config = load_config(config_file)
     if db_config is None:
         logging.error("failed to load database configuration")
