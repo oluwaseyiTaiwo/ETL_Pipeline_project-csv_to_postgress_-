@@ -63,20 +63,20 @@ def file_filters(file_data):
     return filtered_customer_data, filtered_sales_data
 
 
-def read_csv_file(file, required_columns):
+def read_csv_file(file_name, required_columns):
     try:
-        data = pd.read_csv(file)
-        logging.info(f"Successfully loaded {file}")
+        data = pd.read_csv(file_name)
+        logging.info(f"Successfully loaded {file_name}")
 
-        if not validate_columns(data, required_columns, file):
+        if not validate_columns(data, required_columns, file_name):
             return None
         return data
     except FileNotFoundError:
-        logging.error(f"File not found: {file}")
+        logging.error(f"File not found: {file_name}")
     except pd.errors.EmptyDataError:
-        logging.error(f"File is empty: {file}")
+        logging.error(f"File is empty: {file_name}")
     except Exception as e:
-        logging.error(f"Unexpected error reading {file}: {e}")
+        logging.error(f"Unexpected error reading {file_name}: {e}")
     return None
 
 
