@@ -38,7 +38,14 @@ This project implements an ETL (Extract, Transform, Load) pipeline to process sa
   - Ensures data integrity with primary and foreign key constraints.
   - Manages duplicate data by checking existing records before insertion.
 
-  
+## Assumptions
+
+- **File Structure and Format:**
+  - The input CSV files (sales_data.csv and customer_data.csv) have a consistent structure, including all required columns as specified in the config.json.
+  - Dates in the files (order_date, signup_date) follow a parsable format, such as YYYY-MM-DD or YYYY-MM-DD HH:MM:SS.
+
+- **Data Validity:**
+  - Columns like customer_id and order_id are assumed to be unique and numeric.
 ---
 ## Setup Instructions
 
@@ -50,40 +57,40 @@ cd csv_to_postgress_ETL_Pipeline_project
 
 ### 2. Install Python and Dependencies
 - **Install Python:**
-Ensure Python 3.8 or higher is installed on your system. Check the version with:
+  - Ensure Python 3.8 or higher is installed on your system. Check the version with:
 ```bash
 python --version
 ```
 
 - **Set Up Virtual Environment:**
-Create a virtual environment for the project:
+  - Create a virtual environment for the project:
 ```bash
 python -m venv venv
 source your_env_name/bin/activate
 ```
 
 - **Install Dependencies:**
-Install the required Python packages from requirements.txt:
+  - Install the required Python packages from requirements.txt:
 ```bash
 pip install -r requirements.txt
 ```
 
 ### 3. Set Up PostgreSQL
 - Install PostgreSQL
-Ensure PostgreSQL is installed on your system. Download PostgreSQL.
+  - Ensure PostgreSQL is installed on your system. Download PostgreSQL.
 
 - Create Database
-Log in to PostgreSQL and create a new database:
+  - Log in to PostgreSQL and create a new database:
 
 ```sql
 CREATE DATABASE Take_Home_ETL_Pipeline;
 ```
 - Create Schema
-Copy and Paste the provided Data_schema.sql script to set up the database tables using the GUI query tool on pgAdmin4
+  - Copy and Paste the provided Data_schema.sql script to set up the database tables using the GUI query tool on pgAdmin4
 
 ###  4. Configuration
     - Edit config.json
-    pdate the config.json file with appropriate file paths and database connection details:
+    - update the config.json file with appropriate file paths and database connection details:
 
 ```json
 {
@@ -99,7 +106,7 @@ Copy and Paste the provided Data_schema.sql script to set up the database tables
 
 ###  5. Run the ETL Pipeline
 - Execute the Pipeline
-Run the ETL process using:
+  - Run the ETL process using:
 ```bash
 python load_data.py
 ```
