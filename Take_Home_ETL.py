@@ -3,6 +3,7 @@ import json
 import numpy as np
 import logging
 from datetime import datetime
+import sys
 
 
 logging.basicConfig(
@@ -110,9 +111,14 @@ def validate_columns(data, required_columns, file_name):
 
 
 def standardize_data(data, date_column,id_columns):
+    """ 
+    Converts a date-time string to a standard date-time format. Returns NaT (Not a Time) if the text is not in the correct format for conversion. 
+    """
     for date_val in date_column:
         data[date_val] = pd.to_datetime(data[date_val], errors='coerce')
-        
+    """ 
+    Converts date-time strings in columns (order_id and customer_id) to numeric format. Returns NaN for entries that cannot be converted to a number. 
+    """
     for col_name in id_columns:
         data[col_name] = pd.to_numeric(data[col_name], errors='coerce')
 
@@ -122,7 +128,7 @@ def main(config_file="config.json"):
     config = load_config(config_file)
     if config is None:
         logging.error("Failed to load configuration. Exiting.")
-        return None, None, None
+        sys.exit(0) 
 
     customer_data, sales_data = file_filters(file_import(config))
     

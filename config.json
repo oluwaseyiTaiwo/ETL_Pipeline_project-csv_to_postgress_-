@@ -13,9 +13,9 @@
     },
     "database": {
         "user": "postgres",
-        "password": "admin",
+        "password": "your_password",
         "host": "localhost",
         "port": 5432,
-        "database": "Take_Home_ETL_Pipeline"
+        "database": "your_database_name"
     }
 }

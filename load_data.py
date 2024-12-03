@@ -31,16 +31,23 @@ def get_db_engine(config_file="config.json"):
     """
    Load database and establish connection to PostgreSQL database
     """
-    db_config = load_config(config_file)
-    if db_config is None:
+    db_config_data = load_config(config_file)
+    if db_config_data is None:
         logging.error("failed to load database configuration")
         return None
 
-    engine_url = f"postgresql+pg8000://{db_config['user']}:{db_config['password']}@{db_config['host']}:{db_config['port']}/{db_config['database']}"
+    engine_url = f"postgresql+pg8000://{db_config_data['user']}:{db_config_data['password']}@{db_config_data['host']}:{db_config_data['port']}/{db_config_data['database']}"
     return create_engine(engine_url)
 
 
 def load_data_to_postgres(engine, table_name, dataframe, key_column=None, batch_size=1000):
+    """
+    Loads data from a Pandas DataFrame into a PostgreSQL table using SQLAlchemy.
+    Ensures duplicate records are avoided (if a key_column is provided).
+    Supports batch processing for large datasets to optimize performance.
+  
+    Logs status of data insertion or any errors encountered.
+    """
     Session = sessionmaker(bind=engine)
     session = Session()
 
@@ -51,9 +58,12 @@ def load_data_to_postgres(engine, table_name, dataframe, key_column=None, batch_
     try:
         with engine.begin() as conn:
             if key_column:
+                # if a key_column is specified, check for existing records in the table
                 existing_data = pd.read_sql(f"SELECT {key_column} FROM {table_name}", conn)
-                delta_data = dataframe[~dataframe[key_column].isin(existing_data[key_column])]
                 
+                # Filter the DataFrame to include only new records not present in the table
+                delta_data = dataframe[~dataframe[key_column].isin(existing_data[key_column])]
+
                 if not delta_data.empty:
                     try:
                         for start in range(0, len(delta_data), batch_size):
@@ -80,7 +90,6 @@ def load_data_to_postgres(engine, table_name, dataframe, key_column=None, batch_
 def main():
     customer_data, sales_data, sales_summary = Take_Home_ETL.main()
     engine = get_db_engine()
-
     load_data_to_postgres(engine, 'customer_data', customer_data,'customer_id')
     load_data_to_postgres(engine, 'sales_data', sales_data,"order_id")
     load_data_to_postgres(engine, 'sales_summary', sales_summary)
