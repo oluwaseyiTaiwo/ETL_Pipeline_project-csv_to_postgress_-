@@ -68,7 +68,7 @@ def file_filters(file_data):
 
     filtered_customer_data['customer_tenure'] = ((datetime.now() - filtered_customer_data['signup_date']).dt.days).astype(int)
     
-    filtered_sales_data['customer_tenure'] = pd.to_numeric(filtered_sales_data['quantity'], errors='coerce') * pd.to_numeric((filtered_sales_data['price']), errors='coerce')
+    filtered_sales_data['total_value'] = pd.to_numeric(filtered_sales_data['quantity'], errors='coerce') * pd.to_numeric((filtered_sales_data['price']), errors='coerce')
     filtered_sales_data['order_type'] = np.where(filtered_sales_data['total_value'] > 1000, "High-Value Order", "Regular Order")
     
     filtered_customer_data['customer_id'] = pd.to_numeric(filtered_customer_data["customer_id"], errors='coerce').astype(int)
